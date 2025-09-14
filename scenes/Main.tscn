@@ -1,0 +1,101 @@
+[gd_scene load_steps=8 format=3 uid="uid://bq14k1kmpwaua"]
+
+[ext_resource type="Script" uid="uid://bn2xgg2o5blwc" path="res://scripts/Main.gd" id="1_rvslj"]
+[ext_resource type="PackedScene" uid="uid://bcmrw2aufriru" path="res://scenes/Target.tscn" id="2_0bbpv"]
+[ext_resource type="Script" uid="uid://c0tc4fi55ixgi" path="res://scripts/Wind.gd" id="3_0bbpv"]
+[ext_resource type="Script" uid="uid://cwv0ysq8u3srr" path="res://scripts/Pulse.gd" id="3_rarhs"]
+[ext_resource type="Script" uid="uid://cbrr8s7iyrgs8" path="res://scripts/LevelLoader.gd" id="5_vcsgt"]
+[ext_resource type="Script" uid="uid://cyte7nj2h7u7j" path="res://scripts/UI.gd" id="6_c01mt"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nxtc6"]
+bg_color = Color(0.905882, 0.298039, 0.235294, 1)
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_rvslj")
+
+[node name="Target" parent="." instance=ExtResource("2_0bbpv")]
+position = Vector2(360, 480)
+
+[node name="Pulse" type="Node" parent="Target"]
+script = ExtResource("3_rarhs")
+
+[node name="Spawn" type="Marker2D" parent="."]
+position = Vector2(360, 1120)
+
+[node name="FXLayer" type="CanvasLayer" parent="."]
+
+[node name="WindField" type="Node2D" parent="FXLayer"]
+script = ExtResource("3_0bbpv")
+
+[node name="Node" type="Node" parent="."]
+script = ExtResource("5_vcsgt")
+
+[node name="UI" type="CanvasLayer" parent="."]
+script = ExtResource("6_c01mt")
+
+[node name="Root" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+
+[node name="Top" type="HBoxContainer" parent="UI/Root"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+
+[node name="LevelName" type="Label" parent="UI/Root/Top"]
+layout_mode = 2
+text = "Level: "
+horizontal_alignment = 3
+
+[node name="Pulse" type="Panel" parent="UI/Root/Top"]
+visible = false
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_nxtc6")
+
+[node name="Wind" type="Label" parent="UI/Root/Top"]
+layout_mode = 2
+text = "Wind: 0 →"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/Root"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+
+[node name="Hits" type="Label" parent="UI/Root/HBoxContainer"]
+layout_mode = 2
+text = "Hits: 0/0"
+
+[node name="Control" type="Control" parent="UI/Root/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Apples" type="Label" parent="UI/Root/HBoxContainer"]
+layout_mode = 2
+text = "Apples: 0/0"
+
+[node name="Bottom" type="MarginContainer" parent="UI/Root"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="Buttons" type="HBoxContainer" parent="UI/Root/Bottom"]
+layout_mode = 2
+
+[node name="Restart" type="Button" parent="UI/Root/Bottom/Buttons"]
+layout_mode = 2
+text = "Restart"
+
+[node name="Next" type="Button" parent="UI/Root/Bottom/Buttons"]
+layout_mode = 2
+text = "Next"

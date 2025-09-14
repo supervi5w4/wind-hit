@@ -1,0 +1,13 @@
+{
+  "name": "Calm Start",
+  "rotation_speed_deg": 75,
+  "wind_strength_x": 80,
+  "pulse_interval_sec": 4.0,
+  "apples": [
+	{ "angle_deg": 0, "radius": 140 },
+	{ "angle_deg": 120, "radius": 140 },
+	{ "angle_deg": 240, "radius": 140 }
+  ],
+  "knives_to_win": 8,
+  "bonus_on_pulse": "slowmo"
+}

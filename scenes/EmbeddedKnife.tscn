@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://dalomyj66l1cu"]
+
+[ext_resource type="Script" uid="uid://btc7evel2hdye" path="res://scripts/EmbeddedKnife.gd" id="1_s1as8"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vfpvn"]
+size = Vector2(8, 40)
+
+[node name="EmbeddedKnife" type="StaticBody2D"]
+collision_layer = 4
+script = ExtResource("1_s1as8")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -20)
+shape = SubResource("RectangleShape2D_vfpvn")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_top = -20.0
+offset_right = 8.0
+offset_bottom = 20.0

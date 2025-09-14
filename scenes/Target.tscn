@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://bcmrw2aufriru"]
+
+[ext_resource type="Script" uid="uid://c5t8g6eetobyi" path="res://scripts/Target.gd" id="1_n13nt"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ligy1"]
+radius = 120.0
+
+[node name="Target" type="Node2D"]
+script = ExtResource("1_n13nt")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+shape = SubResource("CircleShape2D_ligy1")
+
+[node name="Center" type="Marker2D" parent="."]

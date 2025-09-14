@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://5qmcpbo2xok5"]
+
+[ext_resource type="Script" uid="uid://b5nr1d4g2kwgw" path="res://scripts/Apple.gd" id="1_nm403"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mpkm5"]
+radius = 12.0
+
+[node name="Apple" type="StaticBody2D"]
+collision_layer = 8
+script = ExtResource("1_nm403")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_mpkm5")

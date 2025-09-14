@@ -1,0 +1,14 @@
+{
+  "name": "Breezy Groove",
+  "rotation_speed_deg": 110,
+  "wind_strength_x": -120,
+  "pulse_interval_sec": 3.5,
+  "apples": [
+	{ "angle_deg": 45, "radius": 150 },
+	{ "angle_deg": 180, "radius": 150 },
+	{ "angle_deg": 315, "radius": 150 },
+	{ "angle_deg": 90, "radius": 110 }
+  ],
+  "knives_to_win": 10,
+  "bonus_on_pulse": "slowmo"
+}
