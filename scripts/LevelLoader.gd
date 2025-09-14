@@ -2,6 +2,7 @@ extends Node
 # LevelLoader.gd — читает JSON-уровень, применяет параметры и ведёт прогресс.
 
 @export var levels_index_path: String = "res://levels/levels_index.json"
+@export var use_config_loader: bool = true  # Использовать новый LevelConfigLoader
 
 const APPLE_SCENE := preload("res://scenes/Apple.tscn")
 
@@ -19,6 +20,7 @@ var apples_left: int = 0
 @onready var target: Node2D = $"../Target"
 @onready var wind_field: Node = $"../FXLayer/WindField"
 @onready var ui: Node = $"../UI"
+@onready var config_loader: LevelConfigLoader = $"../LevelConfigLoader"
 
 func _ready() -> void:
 	if not is_in_group("level_loader"):
@@ -28,8 +30,16 @@ func _ready() -> void:
 	if ui != null:
 		await ui.ready   # <- ключевая строка
 
-	_load_levels_index()
-	load_level_by_index(_current_index)
+	if use_config_loader and config_loader != null:
+		# Подключаемся к сигналам нового загрузчика
+		if not config_loader.is_connected("level_loaded", Callable(self, "_on_config_level_loaded")):
+			config_loader.connect("level_loaded", Callable(self, "_on_config_level_loaded"))
+		# Дожидаемся инициализации конфигурационного загрузчика
+		await config_loader.ready
+	else:
+		# Используем старый метод загрузки
+		_load_levels_index()
+		load_level_by_index(_current_index)
 
 func _load_levels_index() -> void:
 	_levels.clear()
@@ -50,12 +60,16 @@ func _load_levels_index() -> void:
 				_levels.append(it as String)
 
 func load_level_by_index(i: int) -> void:
-	if _levels.is_empty():
-		push_error("No levels listed.")
-		return
-	_current_index = clampi(i, 0, _levels.size() - 1)
-	var level_path: String = "res://levels/%s" % _levels[_current_index]
-	_apply_level_from_file(level_path)
+	if use_config_loader and config_loader != null:
+		config_loader.load_level_by_index(i)
+		_current_index = config_loader.get_current_level_index()
+	else:
+		if _levels.is_empty():
+			push_error("No levels listed.")
+			return
+		_current_index = clampi(i, 0, _levels.size() - 1)
+		var level_path: String = "res://levels/%s" % _levels[_current_index]
+		_apply_level_from_file(level_path)
 
 func _apply_level_from_file(path: String) -> void:
 	embedded_count = 0
@@ -144,10 +158,16 @@ func register_apple_collected() -> void:
 	_update_ui_progress()
 
 func restart_level() -> void:
-	load_level_by_index(_current_index)
+	if use_config_loader and config_loader != null:
+		config_loader.restart_level()
+	else:
+		load_level_by_index(_current_index)
 
 func next_level() -> void:
-	_go_next_level()
+	if use_config_loader and config_loader != null:
+		config_loader.next_level()
+	else:
+		_go_next_level()
 
 func _go_next_level() -> void:
 	var next_i: int = _current_index + 1
@@ -189,3 +209,60 @@ func _on_pulse_started() -> void:
 func _on_pulse_ended() -> void:
 	if ui != null and ui.has_method("set_pulse_active"):
 		ui.call("set_pulse_active", false)
+
+# Методы для работы с новым LevelConfigLoader
+func _on_config_level_loaded(level_data: Dictionary) -> void:
+	_level_data = level_data
+	_apply_config_level_data()
+
+func _apply_config_level_data() -> void:
+	embedded_count = 0
+	apples_total = 0
+	apples_left = 0
+	_clear_target_children()
+
+	# 1) Поворот цели
+	var rot_deg: float = float(_level_data.get("target_rotation_speed_deg", _level_data.get("rotation_speed_deg", 0.0)))
+	if target != null:
+		target.set("rotation_speed_deg", rot_deg)
+
+	# 2) Ветер
+	var wind_x: float = float(_level_data.get("wind_strength_x", 0.0))
+	if wind_field != null and wind_field.has_method("set_wind_x"):
+		wind_field.call("set_wind_x", wind_x)
+
+	# 3) Пульс
+	var pulse_interval: float = float(_level_data.get("pulse_interval_sec", 4.0))
+	var pulse_node: Node = target.get_node_or_null("Pulse")
+	if pulse_node != null and pulse_node.has_method("set_interval_sec"):
+		pulse_node.call("set_interval_sec", pulse_interval)
+	_connect_pulse_ui(pulse_node)
+
+	# 4) Яблоки
+	var apples_arr: Variant = _level_data.get("apples", [])
+	if typeof(apples_arr) == TYPE_ARRAY:
+		apples_total = (apples_arr as Array).size()
+		apples_left = apples_total
+		for a in (apples_arr as Array):
+			if typeof(a) == TYPE_DICTIONARY:
+				var ad: Dictionary = a as Dictionary
+				var angle_deg: float = float(ad.get("angle_deg", 0.0))
+				var radius: float = float(ad.get("radius", 140.0))
+				_spawn_apple(angle_deg, radius)
+
+	# 5) Победа/бонус
+	knives_to_win = int(_level_data.get("hit_count_required", _level_data.get("knives_to_win", 8)))
+	bonus_on_pulse = String(_level_data.get("bonus_on_pulse", "slowmo"))
+
+	_update_ui_initial(wind_x)
+
+	print("[LevelLoader] Applied config level: %s | rot=%s | wind=%s | pulse=%s | knives=%s | apples=%s"
+		% [String(_level_data.get("level_name", _level_data.get("name", "Unnamed"))), rot_deg, wind_x, pulse_interval, knives_to_win, apples_total])
+
+# Методы для совместимости с новым загрузчиком
+func set_target_rotation_speed(speed: float) -> void:
+	if target != null:
+		target.set("rotation_speed_deg", speed)
+
+func set_knives_to_win(count: int) -> void:
+	knives_to_win = count

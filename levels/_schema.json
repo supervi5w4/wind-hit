@@ -1,0 +1,49 @@
++{
++  "level_name": "string (название уровня)",
++  "background_texture": "string (путь к PNG для фона)",
++  "target_texture": "string (путь к PNG для мишени)",
++  "weapon_texture": "string (путь к PNG для оружия)",
++  "target_rotation_speed_deg": "number (скорость вращения мишени, град/с)",
++  "hit_count_required": "number (сколько попаданий нужно для победы)",
++  "rotation_speed_deg": "optional number (для совместимости с существующим загрузчиком)",
++  "knives_to_win": "optional number (для совместимости с существующим загрузчиком)"
++}
+*** End Patch
+
+*** Begin Patch
+*** Add File: levels/levels_index.json
++{
++  "levels": [
++    "level_01.json",
++    "level_02.json"
++  ]
++}
+*** End Patch
+
+*** Begin Patch
+*** Add File: levels/level_01.json
++{
++  "level_name": "Уровень 1",
++  "background_texture": "assets/textures/backgrounds/factory_night_01.png",
++  "target_texture": "assets/textures/targets/target_candy_01.png",
++  "weapon_texture": "assets/textures/weapons/knife_basic.png",
++  "target_rotation_speed_deg": 120.0,
++  "hit_count_required": 6,
++  "rotation_speed_deg": 120.0,
++  "knives_to_win": 6
++}
+*** End Patch
+
+*** Begin Patch
+*** Add File: levels/level_02.json
++{
++  "level_name": "Уровень 2",
++  "background_texture": "assets/textures/backgrounds/forest_autumn_01.png",
++  "target_texture": "assets/textures/targets/target_wood_01.png",
++  "weapon_texture": "assets/textures/weapons/axe_basic.png",
++  "target_rotation_speed_deg": 150.0,
++  "hit_count_required": 7,
++  "rotation_speed_deg": 150.0,
++  "knives_to_win": 7
++}
+*** End Patch

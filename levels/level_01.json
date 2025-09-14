@@ -1,5 +1,10 @@
 {
-  "name": "Calm Start",
+  "level_name": "Calm Start",
+  "background_texture": "assets/textures/backgrounds/level_01.webp",
+  "target_texture": "assets/textures/targets/level_01.webp",
+  "weapon_texture": "assets/textures/weapons/knife_basic.png",
+  "target_rotation_speed_deg": 75.0,
+  "hit_count_required": 8,
   "rotation_speed_deg": 75,
   "wind_strength_x": 80,
   "pulse_interval_sec": 4.0,

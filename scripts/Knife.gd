@@ -12,12 +12,25 @@ const L_APPLE := 1 << 3      # 8
 @export var vertical_speed: float = -1800.0
 const EMBEDDED_SCENE := preload("res://scenes/EmbeddedKnife.tscn")
 
+var weapon_texture: Texture2D = null
 var _launched: bool = false
 var _done: bool = false
 var _pending_remainder: Vector2 = Vector2.ZERO
 
+func _ready() -> void:
+	add_to_group("knife")
+	# Применяем текстуру оружия, если она была установлена
+	if weapon_texture != null:
+		set_weapon_texture(weapon_texture)
+
 func launch() -> void:
 	_launched = true
+
+func set_weapon_texture(texture: Texture2D) -> void:
+	weapon_texture = texture
+	var weapon_sprite: Sprite2D = get_node_or_null("WeaponSprite")
+	if weapon_sprite != null:
+		weapon_sprite.texture = texture
 
 func _physics_process(delta: float) -> void:
 	if not _launched:

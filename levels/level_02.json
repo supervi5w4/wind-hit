@@ -1,5 +1,10 @@
 {
-  "name": "Breezy Groove",
+  "level_name": "Breezy Groove",
+  "background_texture": "assets/textures/backgrounds/forest_autumn_01.png",
+  "target_texture": "assets/textures/targets/target_wood_01.png",
+  "weapon_texture": "assets/textures/weapons/axe_basic.png",
+  "target_rotation_speed_deg": 110.0,
+  "hit_count_required": 10,
   "rotation_speed_deg": 110,
   "wind_strength_x": -120,
   "pulse_interval_sec": 3.5,

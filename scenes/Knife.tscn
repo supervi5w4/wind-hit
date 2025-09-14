@@ -10,6 +10,8 @@ collision_mask = 14
 script = ExtResource("1_n28j1")
 vertical_speed = -2200.0
 
+[node name="WeaponSprite" type="Sprite2D" parent="."]
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -16)
 shape = SubResource("RectangleShape2D_lbx02")

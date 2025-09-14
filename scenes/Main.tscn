@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://bq14k1kmpwaua"]
+[gd_scene load_steps=9 format=3 uid="uid://bq14k1kmpwaua"]
 
 [ext_resource type="Script" uid="uid://bn2xgg2o5blwc" path="res://scripts/Main.gd" id="1_rvslj"]
 [ext_resource type="PackedScene" uid="uid://bcmrw2aufriru" path="res://scenes/Target.tscn" id="2_0bbpv"]
@@ -6,12 +6,16 @@
 [ext_resource type="Script" uid="uid://cwv0ysq8u3srr" path="res://scripts/Pulse.gd" id="3_rarhs"]
 [ext_resource type="Script" uid="uid://cbrr8s7iyrgs8" path="res://scripts/LevelLoader.gd" id="5_vcsgt"]
 [ext_resource type="Script" uid="uid://cyte7nj2h7u7j" path="res://scripts/UI.gd" id="6_c01mt"]
+[ext_resource type="Script" uid="uid://csl4p2p8bh5io" path="res://scripts/level_loader.gd" id="7_level_loader"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nxtc6"]
 bg_color = Color(0.905882, 0.298039, 0.235294, 1)
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_rvslj")
+
+[node name="Background" type="Sprite2D" parent="."]
+position = Vector2(360, 640)
 
 [node name="Target" parent="." instance=ExtResource("2_0bbpv")]
 position = Vector2(360, 480)
@@ -29,6 +33,9 @@ script = ExtResource("3_0bbpv")
 
 [node name="Node" type="Node" parent="."]
 script = ExtResource("5_vcsgt")
+
+[node name="LevelConfigLoader" type="Node" parent="."]
+script = ExtResource("7_level_loader")
 
 [node name="UI" type="CanvasLayer" parent="."]
 script = ExtResource("6_c01mt")
